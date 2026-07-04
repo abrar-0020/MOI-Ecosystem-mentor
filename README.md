@@ -2,6 +2,8 @@
 
 An intelligent, local Retrieval-Augmented Generation (RAG) assistant designed to help developers learn, build, and deploy on the MOI blockchain. The tool references official documentation to provide precise answers about Cocolang, standard Native Assets (MAS0), custom token mechanics, the Agent Registry, and deployment workflows.
 
+Note: This AI agent is continuously improving. Its knowledge base is currently scoped specifically to the content covered in Sessions 1, 2, and 3. Questions outside this scope may produce fallback responses.
+
 ## Features
 
 - Local Retrieval-Augmented Generation: Answers are grounded in actual MOI documentation using semantic vector search.
