@@ -19,10 +19,10 @@ Note: This AI agent is continuously improving. Its knowledge base is currently s
 | :---: | :---: |
 | <img src="screenshots/home.png" width="400" alt="Home Screen"/> | <img src="screenshots/chat.png" width="400" alt="Chat Interface"/> |
 
-### Chat Experience & Responsive Layouts
-| Assistant Response | Mobile / Compressed View | Alternative Layout |
+### Chat Experience & Responses
+| Assistant Response | Assistant Response | Assistant Response |
 | :---: | :---: | :---: |
-| <img src="screenshots/response.png" width="250" alt="Response Example"/> | <img src="screenshots/localhost_3000_ (1).png" width="250" alt="Mobile View"/> | <img src="screenshots/localhost_3000_ (2).png" width="250" alt="Alternative Layout"/> |
+| <img src="screenshots/response.png" width="250" alt="Assistant Response"/> | <img src="screenshots/localhost_3000_ (1).png" width="250" alt="Assistant Response"/> | <img src="screenshots/localhost_3000_ (2).png" width="250" alt="Assistant Response"/> |
 
 ## Tech Stack
 
