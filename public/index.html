@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOI Ecosystem Mentor</title>
+    <meta name="description" content="AI-powered mentor for the MOI blockchain ecosystem. Ask about MAS0, TaxToken, OpenClaw, Agent Registry, and MOI development sessions.">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0f1e;
+            color: #e2e8f0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 860px;
+            height: 92vh;
+            background: #111827;
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(14, 165, 233, 0.12),
+                        0 0 0 1px rgba(255,255,255,0.06);
+        }
+
+        /* ─── Header ─── */
+        .header {
+            padding: 18px 24px;
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left h1 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .header-left p {
+            font-size: 12px;
+            opacity: 0.85;
+            margin-top: 2px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ─── Chat Box ─── */
+        .chat-box {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            scroll-behavior: smooth;
+        }
+
+        .chat-box::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-box::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-box::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 2px;
+        }
+
+        /* ─── Messages ─── */
+        .message-wrapper {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 18px;
+            animation: fadeSlideIn 0.25s ease;
+        }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .message-wrapper.user-wrapper {
+            align-items: flex-end;
+        }
+
+        .message-wrapper.bot-wrapper {
+            align-items: flex-start;
+        }
+
+        .message {
+            max-width: 78%;
+            padding: 12px 16px;
+            border-radius: 14px;
+            line-height: 1.65;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-size: 14.5px;
+        }
+
+        .user-msg {
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            border-radius: 14px 14px 4px 14px;
+        }
+
+        .bot-msg {
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px 14px 14px 4px;
+        }
+
+        .thinking-msg {
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px 14px 14px 4px;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        /* ─── Source Citations ─── */
+        .sources {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            max-width: 78%;
+        }
+
+        .source-badge {
+            background: #0f172a;
+            border: 1px solid #1e3a5f;
+            color: #7dd3fc;
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-family: 'Consolas', monospace;
+            cursor: default;
+            transition: background 0.2s;
+        }
+
+        .source-badge:hover {
+            background: #1e293b;
+        }
+
+        /* ─── Typing Indicator ─── */
+        .typing-dots {
+            display: inline-flex;
+            gap: 4px;
+            align-items: center;
+            height: 20px;
+        }
+
+        .typing-dots span {
+            width: 6px;
+            height: 6px;
+            background: #64748b;
+            border-radius: 50%;
+            animation: typingBounce 1.2s ease-in-out infinite;
+        }
+
+        .typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.30s; }
+
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+            40%           { transform: translateY(-6px); opacity: 1; }
+        }
+
+        /* ─── Input Area ─── */
+        .input-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            background: #0f172a;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        #userInput {
+            flex: 1;
+            padding: 13px 16px;
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            color: #e2e8f0;
+            font-size: 14.5px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        #userInput:focus {
+            border-color: #3b82f6;
+        }
+
+        #userInput::placeholder {
+            color: #475569;
+        }
+
+        #sendBtn {
+            padding: 13px 22px;
+            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+            white-space: nowrap;
+        }
+
+        #sendBtn:hover { opacity: 0.9; }
+        #sendBtn:active { transform: scale(0.97); }
+        #sendBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        #clearBtn {
+            padding: 13px 14px;
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            color: #64748b;
+            font-size: 16px;
+            cursor: pointer;
+            transition: color 0.2s, background 0.2s;
+            title: "Clear conversation";
+        }
+
+        #clearBtn:hover {
+            color: #f87171;
+            background: #2d1f1f;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <div class="header-left">
+                <h1>🚀 MOI Ecosystem Mentor</h1>
+                <p>Local RAG · nomic-embed-text · LanceDB</p>
+            </div>
+            <div class="status-dot" id="statusDot" title="Connected"></div>
+        </div>
+
+        <div class="chat-box" id="chatBox">
+            <div class="message-wrapper bot-wrapper">
+                <div class="message bot-msg">Hello! I am MOI Ecosystem Mentor.
+
+Ask me anything about:
+
+• Session 1 — CocoLab + SDK Fundamentals
+• Session 2 — Native Assets (MAS0, TaxToken)
+• Session 3 — OpenClaw + Agent Registry
+• Error troubleshooting
+• Project ideas & quizzes</div>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <input id="userInput" type="text" placeholder="Ask about MOI..." autocomplete="off">
+            <button id="clearBtn" title="Clear conversation" onclick="clearConversation()">🗑</button>
+            <button id="sendBtn" onclick="sendMessage()">Send</button>
+        </div>
+
+    </div>
+
+    <script>
+        // ─── Session Management ───────────────────────────────
+        // Generate a UUID for this browser session.
+        // Persisted in sessionStorage so page refresh keeps the same session,
+        // but a new tab starts fresh.
+
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+                const r = Math.random() * 16 | 0;
+                return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+        }
+
+        let SESSION_ID = sessionStorage.getItem('moi_session_id');
+        if (!SESSION_ID) {
+            SESSION_ID = generateUUID();
+            sessionStorage.setItem('moi_session_id', SESSION_ID);
+        }
+
+        // ─── DOM References ───────────────────────────────────
+        const chatBox = document.getElementById('chatBox');
+        const input   = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        // ─── Enter key to send ────────────────────────────────
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // ─── Send Message ─────────────────────────────────────
+        async function sendMessage() {
+            const text = input.value.trim();
+            if (!text) return;
+
+            addUserMessage(text);
+            input.value = '';
+            sendBtn.disabled = true;
+
+            const thinkingId = addThinkingMessage();
+
+            try {
+                const response = await fetch('http://localhost:3940/message', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text, sessionId: SESSION_ID })
+                });
+
+                const data = await response.json();
+
+                removeMessage(thinkingId);
+
+                if (data.error) {
+                    addBotMessage('❌ Error: ' + data.error, []);
+                } else {
+                    addBotMessage(data.reply, data.sources || []);
+                }
+
+            } catch (err) {
+                removeMessage(thinkingId);
+                addBotMessage('❌ Could not connect to MOI Mentor. Is the server running?', []);
+                console.error(err);
+            } finally {
+                sendBtn.disabled = false;
+                input.focus();
+            }
+        }
+
+        // ─── Clear Conversation ───────────────────────────────
+        async function clearConversation() {
+            try {
+                await fetch('http://localhost:3940/clear', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionId: SESSION_ID })
+                });
+            } catch { /* ignore */ }
+
+            // Reset session ID
+            SESSION_ID = generateUUID();
+            sessionStorage.setItem('moi_session_id', SESSION_ID);
+
+            // Clear chat UI
+            chatBox.innerHTML = `
+                <div class="message-wrapper bot-wrapper">
+                    <div class="message bot-msg">Conversation cleared. How can I help you?</div>
+                </div>`;
+        }
+
+        // ─── Message Rendering ────────────────────────────────
+
+        function addUserMessage(text) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'message-wrapper user-wrapper';
+            wrapper.innerHTML = `<div class="message user-msg">${escapeHtml(text)}</div>`;
+            chatBox.appendChild(wrapper);
+            scrollToBottom();
+        }
+
+        function addThinkingMessage() {
+            const id = 'thinking-' + Date.now();
+            const wrapper = document.createElement('div');
+            wrapper.className = 'message-wrapper bot-wrapper';
+            wrapper.id = id;
+            wrapper.innerHTML = `
+                <div class="message thinking-msg">
+                    <div class="typing-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>`;
+            chatBox.appendChild(wrapper);
+            scrollToBottom();
+            return id;
+        }
+
+        function addBotMessage(text, sources) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'message-wrapper bot-wrapper';
+
+            let html = `<div class="message bot-msg">${escapeHtml(text)}</div>`;
+
+            // Render source citations as badges
+            if (sources && sources.length > 0) {
+                const uniqueFiles = [...new Set(sources.map(s => s.file))];
+                const badges = uniqueFiles
+                    .map(f => `<span class="source-badge">📄 ${escapeHtml(f)}</span>`)
+                    .join('');
+                html += `<div class="sources">${badges}</div>`;
+            }
+
+            wrapper.innerHTML = html;
+            chatBox.appendChild(wrapper);
+            scrollToBottom();
+        }
+
+        function removeMessage(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        function scrollToBottom() {
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+    </script>
+
+</body>
+
+</html>

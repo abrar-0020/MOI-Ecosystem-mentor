@@ -1,0 +1,32 @@
+{
+  "name": "moi-ecosystem-mentor",
+  "version": "5.0.0",
+  "description": "MOI Ecosystem Mentor — Local RAG-powered AI assistant for the MOI blockchain",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "ingest": "node rag/ingest.js"
+  },
+  "keywords": [
+    "MOI",
+    "blockchain",
+    "RAG",
+    "Ollama",
+    "LanceDB"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@lancedb/lancedb": "^0.14.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "glob": "^11.0.0",
+    "helmet": "^8.2.0",
+    "lucide-react": "^1.23.0",
+    "ollama": "^0.6.3"
+  }
+}
