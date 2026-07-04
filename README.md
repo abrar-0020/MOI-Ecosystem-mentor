@@ -12,6 +12,18 @@ Note: This AI agent is continuously improving. Its knowledge base is currently s
 - Session Management: Manages conversation context securely in memory with automatic session expiration and garbage collection to protect server resources.
 - Modern Web Client: Features a fully responsive user interface built on Next.js, tailored with custom styles matching the MOI branding guidelines.
 
+## Screenshots
+
+### Main Interface
+| Home / Welcome Screen | Chat Interface |
+| :---: | :---: |
+| <img src="screenshots/home.png" width="400" alt="Home Screen"/> | <img src="screenshots/chat.png" width="400" alt="Chat Interface"/> |
+
+### Chat Experience & Responsive Layouts
+| Assistant Response | Mobile / Compressed View | Alternative Layout |
+| :---: | :---: | :---: |
+| <img src="screenshots/response.png" width="250" alt="Response Example"/> | <img src="screenshots/localhost_3000_ (1).png" width="250" alt="Mobile View"/> | <img src="screenshots/localhost_3000_ (2).png" width="250" alt="Alternative Layout"/> |
+
 ## Tech Stack
 
 ### Backend
